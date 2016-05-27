@@ -17,6 +17,7 @@ public class DetectDepth : MonoBehaviour {
     private ushort[] distances;
     private int concatStringInt;
     public bool SetupFinished = false;
+    public float latency = 1f;
 
 
     // Use this for initialization
@@ -102,10 +103,10 @@ public class DetectDepth : MonoBehaviour {
   
         //x-Coord
         int xCoord = (int)(maxIndex % width);
-        Debug.Log("x= " + xCoord);
-        Debug.Log("y= " + yCoord);
+        //Debug.Log("x= " + xCoord);
+        //Debug.Log("y= " + yCoord);
 
-
+        /*
         int offset = (lastDist - aktDist) * 2;
         if(offset > 400)
         {
@@ -113,19 +114,19 @@ public class DetectDepth : MonoBehaviour {
         }
 
         lastDist = aktDist;
-        Debug.Log(offset);
+        */
+        //Debug.Log(offset);
         
         if (distances == null)
         {
             return;
         }
 
-        float latency = 1f;
         float ElapsedTime = 0.0f;
         float FinishTime = 60f;
 
         Vector3 oldPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-        Vector3 newPos = new Vector3(yCoord/100, gameObject.transform.position.y, xCoord/100);
+        Vector3 newPos = new Vector3(yCoord, gameObject.transform.position.y, xCoord);
         // 0.3f = maxDistanceDelta => Pro Call 0.3 Units in Richtung Ziel -> Optimal Zeitwert mitreinmultiplizieren TODO
         // eventuell Lerp benutzen
         ElapsedTime += Time.deltaTime;
@@ -136,8 +137,8 @@ public class DetectDepth : MonoBehaviour {
         gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, latency * Time.deltaTime);
         //gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos,0.2f);
 
-        //Debug.Log(oldPos + " old");
-        //Debug.Log(newPos + " new");
+        Debug.Log(oldPos + " old");
+        Debug.Log(newPos + " new");
 
      
     } 
