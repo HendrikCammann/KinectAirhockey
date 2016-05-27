@@ -136,8 +136,8 @@ public class DetectDepth : MonoBehaviour {
         gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, latency * Time.deltaTime);
         //gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos,0.2f);
 
-        Debug.Log(oldPos + " old");
-        Debug.Log(newPos + " new");
+        //Debug.Log(oldPos + " old");
+        //Debug.Log(newPos + " new");
 
      
     } 
