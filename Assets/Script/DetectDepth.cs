@@ -31,7 +31,7 @@ public class DetectDepth : MonoBehaviour {
         }
     }
 
-    //int lastDist = 0;
+    int lastDist = 0;
     //int counter = 0;
 	// Update is called once per frame
 	void Update () {
@@ -41,7 +41,7 @@ public class DetectDepth : MonoBehaviour {
         }
 
         distances = depthManager.GetDepthData();
-        //int aktDist = distances[4000];
+        int aktDist = distances[4000];
 
         for(int i = 0; i < distances.Length; i++)
         {
@@ -51,7 +51,7 @@ public class DetectDepth : MonoBehaviour {
             }
         }
 
-        int width = 512;
+        /*int width = 512;
         int[] getArray;
         int[] getArray2;
 
@@ -87,48 +87,54 @@ public class DetectDepth : MonoBehaviour {
         concatStringInt = newMaxIndex;
         int yCoord = (int)(newMaxIndex / width);
         int xCoord = newMaxIndex % width;
-        //int maxValue;
-        //int maxIndex;
+        */
+        int maxValue;
+        int maxIndex;
 
-        //maxValue = (int) distances.Min();
-        //maxIndex = (int) distances.ToList().IndexOf(distances.Min());
+        maxValue = (int) distances.Min();
+        maxIndex = (int) distances.ToList().IndexOf(distances.Min());
 
         //int height = 424;
-        //int width = 512;
+        int width = 512;
 
         //y-Coord
-        //int yCoord = (int)(maxIndex / width);
+        int yCoord = (int)(maxIndex / width);
   
         //x-Coord
-        //int xCoord = (int)(maxIndex % width);
-        //Debug.Log("x= " + xCoord);
-        //Debug.Log("y= " + yCoord);
+        int xCoord = (int)(maxIndex % width);
+        Debug.Log("x= " + xCoord);
+        Debug.Log("y= " + yCoord);
 
 
-        //int offset = (lastDist - aktDist) * 2;
-        //if(offset > 400)
-        //{
-        //    offset = 500;
-        //}
+        int offset = (lastDist - aktDist) * 2;
+        if(offset > 400)
+        {
+            offset = 500;
+        }
 
-        //lastDist = aktDist;
-        //Debug.Log(offset);
-
+        lastDist = aktDist;
+        Debug.Log(offset);
+        
         if (distances == null)
         {
             return;
         }
-        float latency = 0.5f;
+
+        float latency = 1f;
         float ElapsedTime = 0.0f;
         float FinishTime = 60f;
+
         Vector3 oldPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-        Vector3 newPos = new Vector3(yCoord, gameObject.transform.position.y, xCoord);
+        Vector3 newPos = new Vector3(yCoord/100, gameObject.transform.position.y, xCoord/100);
         // 0.3f = maxDistanceDelta => Pro Call 0.3 Units in Richtung Ziel -> Optimal Zeitwert mitreinmultiplizieren TODO
         // eventuell Lerp benutzen
         ElapsedTime += Time.deltaTime;
+        float start = Time.time;
+       
+        float length = Vector3.Distance(oldPos, newPos);
         //gameObject.transform.position = Vector3.Lerp(oldPos, newPos, ElapsedTime / FinishTime);
-        //gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, latency * Time.deltaTime);
-        gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, 0.3f);
+        gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, latency * Time.deltaTime);
+        //gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos,0.2f);
 
         Debug.Log(oldPos + " old");
         Debug.Log(newPos + " new");
@@ -177,6 +183,11 @@ public class DetectDepth : MonoBehaviour {
                 break;
             }
 
+            if(indexForTest > 217088)
+            {
+                indexForTest = 217087;
+            }
+
             int aktValue2 = array[indexForTest];
             int contrast2 = largestInArray - aktValue2;
 
@@ -187,7 +198,13 @@ public class DetectDepth : MonoBehaviour {
             }
         }
 
+        Debug.Log(xValueInPicDownwards + "Down");
+        Debug.Log(xValueInPicUpwards + "Up");
+
         double indexOfNumberInbetweenConstrastDropsDouble =(xValueInPicDownwards + xValueInPicUpwards) / 2;
+
+        Debug.Log(indexOfNumberInbetweenConstrastDropsDouble + " indexDropsDouble");
+
         int indexOfNumerInbetweenConstrastDrops = (int) Math.Ceiling(indexOfNumberInbetweenConstrastDropsDouble);
 
         double helper = indexOfNumerInbetweenConstrastDrops / 2;
@@ -200,6 +217,11 @@ public class DetectDepth : MonoBehaviour {
             {
                 inArrayBoundsThird = false;
                 break;
+            }
+
+            if(indexOfNumerInbetweenConstrastDrops > 217088)
+            {
+                indexOfNumerInbetweenConstrastDrops = 217087;
             }
 
             int aktValue3 = array[indexOfNumerInbetweenConstrastDrops];

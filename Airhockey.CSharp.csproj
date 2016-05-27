@@ -84,6 +84,7 @@
     <Compile Include="Assets\KinectView\Scripts\MultiSourceManager.cs" />
     <Compile Include="Assets\Script\DetectDepth.cs" />
     <Compile Include="Assets\Script\DetectJoints.cs" />
+    <Compile Include="Assets\Script\OriginSetup.cs" />
     <Compile Include="Assets\addForceToPuk.cs" />
     <Compile Include="Assets\movePuk.cs" />
     <Compile Include="Assets\score.cs" />
