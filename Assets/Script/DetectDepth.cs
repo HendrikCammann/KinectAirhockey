@@ -18,6 +18,8 @@ public class DetectDepth : MonoBehaviour {
     private int concatStringInt;
     public bool SetupFinished = false;
     public float latency = 1f;
+    private int lastXcoord = 0;
+    private int lastYcoord = 0;
 
 
     // Use this for initialization
@@ -105,6 +107,15 @@ public class DetectDepth : MonoBehaviour {
         int xCoord = (int)(maxIndex % width);
         //Debug.Log("x= " + xCoord);
         //Debug.Log("y= " + yCoord);
+        int xCoordOffset = 0;
+        int yCoordOffset = 0;
+
+        xCoordOffset = (xCoord - lastXcoord);
+        yCoordOffset = (yCoord - lastYcoord);
+        //Debug.Log("xOffset = " + xCoordOffset);
+        //Debug.Log("yOffset = " + yCoordOffset);
+        lastXcoord = xCoord;
+        lastYcoord = yCoord;        
 
         /*
         int offset = (lastDist - aktDist) * 2;
@@ -126,7 +137,8 @@ public class DetectDepth : MonoBehaviour {
         float FinishTime = 60f;
 
         Vector3 oldPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-        Vector3 newPos = new Vector3(yCoord, gameObject.transform.position.y, xCoord);
+        //Vector3 newPos = new Vector3(xCoord, gameObject.transform.position.y, yCoord);
+        Vector3 newPos = new Vector3(gameObject.transform.position.x + xCoordOffset, 0, gameObject.transform.position.z + yCoordOffset);
         // 0.3f = maxDistanceDelta => Pro Call 0.3 Units in Richtung Ziel -> Optimal Zeitwert mitreinmultiplizieren TODO
         // eventuell Lerp benutzen
         ElapsedTime += Time.deltaTime;
@@ -134,7 +146,8 @@ public class DetectDepth : MonoBehaviour {
        
         float length = Vector3.Distance(oldPos, newPos);
         //gameObject.transform.position = Vector3.Lerp(oldPos, newPos, ElapsedTime / FinishTime);
-        gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, latency * Time.deltaTime);
+        //gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos, latency * Time.deltaTime);
+        gameObject.transform.position = newPos;
         //gameObject.transform.position = Vector3.MoveTowards(oldPos, newPos,0.2f);
 
         Debug.Log(oldPos + " old");
